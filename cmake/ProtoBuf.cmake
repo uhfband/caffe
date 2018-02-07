@@ -27,6 +27,9 @@ include_directories("${PROJECT_BINARY_DIR}/include")
 
 set(PROTOBUF_GENERATE_CPP_APPEND_PATH TRUE)
 
+set(proto_path "${PROJECT_SOURCE_DIR}/src")
+set(python_out "${PROJECT_BINARY_DIR}/include")
+
 ################################################################################################
 # Modification of standard 'protobuf_generate_cpp()' with output dir parameter and python support
 # Usage:
@@ -78,7 +81,7 @@ function(caffe_protobuf_generate_cpp_py output_dir srcs_var hdrs_var python_var)
              "${output_dir}/${fil_we}_pb2.py"
       COMMAND ${CMAKE_COMMAND} -E make_directory "${output_dir}"
       COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} --cpp_out    ${output_dir} ${_protoc_include} ${abs_fil}
-      COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} --python_out ${output_dir} ${_protoc_include} ${abs_fil}
+      COMMAND ${PROTOBUF_PROTOC_EXECUTABLE} --proto_path ${proto_path} --python_out ${python_out} ${_protoc_include} ${abs_fil}
       DEPENDS ${abs_fil}
       COMMENT "Running C++/Python protocol buffer compiler on ${fil}" VERBATIM )
   endforeach()
